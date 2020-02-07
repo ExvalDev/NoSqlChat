@@ -1,0 +1,2 @@
+# NoSqlChat
+Own structure 
