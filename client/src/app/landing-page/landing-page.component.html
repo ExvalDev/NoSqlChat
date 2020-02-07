@@ -1,1 +1,15 @@
-<p>landing-page works!</p>
+<div class="container-fluid row vh-100 pt-5">
+  <div class="col-5 mx-auto ">
+    <div class="p-5 bg-white shadow">
+      <div class="btn-group mb-3 w-100">
+        <button id="selectLogin" (click)="toggle('login')" type="button" [className]="activeView ? 'col-6 btn btn-outline-primary active' : 'col-6 btn btn-outline-primary'">Login</button>
+        <button id="selectRegister" (click)="toggle('register')" type="button" [className]="activeView ? 'col-6 btn btn-outline-primary' : 'col-6 btn btn-outline-primary active'">Registrierung</button>
+      </div>
+      <!-- Login -->
+      <app-login class="w-100" *ngIf="!showRegister"></app-login>
+      <!-- Registrierung -->
+      <app-register class="w-100" *ngIf="showRegister"></app-register>
+    </div>
+  </div>
+</div>
+

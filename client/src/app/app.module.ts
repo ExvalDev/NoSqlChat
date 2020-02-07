@@ -11,6 +11,7 @@ import { TimelineComponent } from './main-page/_components/timeline/timeline.com
 import { MainfeedComponent } from './main-page/_components/mainfeed/mainfeed.component';
 import { PersonalPostsComponent } from './main-page/_components/personal-posts/personal-posts.component';
 import { PostComponent } from './main-page/_components/post/post.component';
+import { PostFormComponent } from './main-page/_components/post-form/post-form.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { PostComponent } from './main-page/_components/post/post.component';
     TimelineComponent,
     MainfeedComponent,
     PersonalPostsComponent,
-    PostComponent
+    PostComponent,
+    PostFormComponent
   ],
   imports: [
     BrowserModule

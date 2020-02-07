@@ -77,8 +77,6 @@ io.on('connection', socket => {
         });
     });
     
-    
-
     socket.on('post', postAsJson => {
         const post = JSON.parse(postAsJson);
         console.log(post);
@@ -93,7 +91,6 @@ io.on('connection', socket => {
         });
         
     });
-
 
     //like a post
     socket.on('like', postId =>{

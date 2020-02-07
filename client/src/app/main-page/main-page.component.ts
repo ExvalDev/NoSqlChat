@@ -12,4 +12,8 @@ export class MainPageComponent implements OnInit {
   ngOnInit() {
   }
 
+  counter(i:number){
+    return new Array(i);
+  }
+
 }

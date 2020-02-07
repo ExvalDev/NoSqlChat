@@ -1,1 +1,31 @@
-<p>main-page works!</p>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-primary sticky-top">
+      <a class="navbar-brand" href="#"><i class="fas fa-quidditch"></i></a>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-outline-secondary ml-auto" data-toggle="modal" data-target="#modelId">
+        Posten
+      </button>
+      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+          aria-expanded="false" aria-label="Toggle navigation"></button>
+  </nav>
+  <div class="container-fluid row m-0 p-0">
+    <div class="col-9 p-0 bg-secondary">
+      <!-- Post form -->
+      <div class="w-100 px-4">
+        <app-post-form></app-post-form>
+      </div>
+      <div class="btn-group my-3 w-100 rounded-0">
+        <button id="selectLogin" type="button" class="btn feedBtnActive rounded-0" >Mainfeed</button>
+        <button id="selectRegister" type="button" class="btn feedBtn" >Timeline</button>
+        <button id="selectRegister" type="button" class="btn feedBtn rounded-0" >Your own Posts</button>
+      </div>
+      <!-- Feed -->
+      <div id="feed" class="px-5">
+        <app-post *ngFor="let in of counter(10); let i =  index"></app-post>
+      </div>
+      
+    </div>
+    <div id="profileArea" class="col-3 bg-white p-0 vh-100 position-fixed">
+      <app-profile></app-profile>
+    </div>
+  </div>
+
