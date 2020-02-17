@@ -22,4 +22,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
     return new Array(i);
   }
 
+  logout(){
+    localStorage.setItem('loggedIn','false');
+    window.location.reload();
+  }
+
 }
