@@ -1,3 +1,4 @@
-
-<!--   <app-landing-page></app-landing-page> -->
-  <app-main-page></app-main-page>
+ <!--  {{authenticated}} -->
+  <app-landing-page *ngIf="!authenticated"></app-landing-page>
+  <app-main-page *ngIf="authenticated"></app-main-page>
+ 

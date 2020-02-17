@@ -38,7 +38,6 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
     console.log('a user connected');
-    io.emit('test','con from server');
 
     /**
      * register user 
@@ -55,13 +54,30 @@ io.on('connection', socket => {
                     redisClient.hgetall('users',(err,result)=>{
                         console.log(result);
                     });
-                    /* user['id'] = userKey;
-                    io.emit('user', JSON.stringify(user)); */
+                    user['id'] = userKey;
+                    io.emit('registered', JSON.stringify(user));
                 });   
             }else {
-                console.log('username bereits vorhanden');
+                io.emit('registerFailed');
             }
         });     
+    });
+
+    socket.on('login', user=>{
+        redisClient.hget('users', user.username,(err,key)=>{
+            if (err){
+                io.emit('loginFailed', 'userNotFound');
+            }else{
+                console.log(key);
+                redisClient.hgetall(key,(err, checkUser)=>{
+                    if(checkUser.password == user.password){
+                        io.emit('loginDone');
+                    }else{
+                        io.emit('loginFailed', 'wrongPassword');
+                    }
+                }); 
+            }
+        });
     });
 
     // send all posts
