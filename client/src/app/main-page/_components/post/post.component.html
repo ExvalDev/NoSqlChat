@@ -1,4 +1,4 @@
-<div class="card text-left rounded-0 shadow mb-3">
+<div *ngIf="post != null" class="card text-left rounded-0 shadow mb-3">
   <div class="card-header media">   
     <!-- <img src="" class="align-self-end mr-3" alt="Profil"> -->
     <div class="media-body">
@@ -8,8 +8,8 @@
   <img class="card-img-top" src="holder.js/100px180/" alt="">
   <div class="card-body">
     
-    <h4 class="card-title">Lorem ipsum</h4>
-    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis, lectus magna fringilla urna, porttitor rhoncus dolor purus non</p>
+    <h4 class="card-title">{{post.title}} {{post.id}}</h4>
+    <p class="card-text">{{post.content}}</p>
     <p class="card-text"><small class="text-muted">created at 07.02.2020</small></p>
   </div>
   <div class="card-footer py-0">

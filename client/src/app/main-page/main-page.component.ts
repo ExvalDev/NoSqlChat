@@ -18,12 +18,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.socket.close();
   }
 
-  counter(i:number){
-    return new Array(i);
-  }
 
   logout(){
-    localStorage.setItem('loggedIn','false');
+    localStorage.removeItem('userKey');
     window.location.reload();
   }
 

@@ -84,6 +84,7 @@ io.on('connection', socket => {
     socket.on('allPosts', ()=>{
         redisClient.keys('post:*',(err,posts)=>{
             consoleError(err);
+            console.log(posts);
             posts.forEach(postKey => {
                 redisClient.hgetall(postKey,(err,post)=>{
                     post['id'] = postKey;
@@ -104,6 +105,7 @@ io.on('connection', socket => {
             console.log(postKey);
             redisClient.hmset(postKey,post);
             post['id'] = postKey;
+            console.log(post);
             io.emit('post', JSON.stringify(post));
         });
         
