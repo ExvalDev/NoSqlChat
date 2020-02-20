@@ -6,31 +6,30 @@ import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class MainSocketService {
-  /* public posts$: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]); */
+  public posts$: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
   private socket: SocketIOClient.Socket = io(environment.socketHost);
 
   constructor() {
-
+    
     /* Run after page opening */
     this.socket.on('post', (rawPost: string) => {
-      /* const posts = this.posts$.getValue();
+      const posts = this.posts$.getValue();
       posts.unshift(JSON.parse(rawPost));
-      this.posts$.next(posts); */
+      this.posts$.next(posts);
     });
-    this.socket.on('test', (test: string) => {
-      console.log(test);
-    })
+  }
+
+  public allPosts(){
+    this.socket.emit('allPosts');
   }
 
   /* functions between socket and server socket */
-  /* public register(username: string){
-    this.socket.emit('register',{username:username, password:'12345'});
-  }
-
+  
   public addPost(post: object) {
+    console.log('addPostSocket');
     this.socket.emit('post', JSON.stringify(post));
   }
-
+  /*
   public plusLike(postId:String){
     this.socket.emit('like',postId);
     
@@ -39,7 +38,7 @@ export class MainSocketService {
   */
   public close(): void {
     this.socket.close();
-    /* this.posts$.complete(); */
+    this.posts$.complete();
   } 
 
 }

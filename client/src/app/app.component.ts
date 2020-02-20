@@ -11,7 +11,9 @@ export class AppComponent implements OnInit{
   public authenticated:boolean;
   title = 'client';
   constructor(private entrySocket: EntrySocketService){
-   this.authenticated = (localStorage.getItem('loggedIn') == 'true');
+    if (localStorage.getItem('userKey') != undefined) {
+      this.authenticated = true;
+    }
   }
 
   ngOnInit() {

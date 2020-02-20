@@ -44,9 +44,9 @@ export class EntrySocketService {
     this.socket.on('loginFailed',(err)=>{
       console.log(err);
     })
-    this.socket.on('loginDone',()=>{
+    this.socket.on('loginDone',(userKey)=>{
       console.log('login complete');
-      localStorage.setItem('loggedIn','true');
+      localStorage.setItem('userKey',userKey);
       window.location.reload();
     })
   }

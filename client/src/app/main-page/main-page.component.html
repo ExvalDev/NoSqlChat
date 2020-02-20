@@ -1,12 +1,13 @@
   <nav class="navbar navbar-expand-sm navbar-dark bg-primary sticky-top">
       <a class="navbar-brand" href="#"><i class="fas fa-quidditch"></i></a>
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-outline-secondary ml-auto" (click)="logout()">
-        Logut
-      </button>
-      <button type="button" class="btn btn-outline-secondary ml-auto" data-toggle="modal" data-target="#modelId">
+      <button type="button" class="btn btn-outline-secondary ml-auto" data-toggle="modal" data-target="#postModal">
         Posten
       </button>
+      <button type="button" class="btn btn-outline-secondary ml-auto" (click)="logout()">
+        Logout
+      </button>
+      
       <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
           aria-expanded="false" aria-label="Toggle navigation"></button>
   </nav>
@@ -23,7 +24,7 @@
       </div>
       <!-- Feed -->
       <div id="feed" class="px-5">
-        <app-post *ngFor="let in of counter(10); let i =  index"></app-post>
+        <app-mainfeed></app-mainfeed>
       </div>
       
     </div>
