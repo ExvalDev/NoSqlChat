@@ -88,8 +88,13 @@ io.on('connection', socket => {
             posts.forEach(postKey => {
                 redisClient.hgetall(postKey,(err,post)=>{
                     post['id'] = postKey;
-                    io.emit('post',JSON.stringify(post));
-                    console.log(post);
+                    redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
+                        console.log(likeCount);
+                        post['likeCount'] = likeCount;
+                        io.emit('post',JSON.stringify(post));
+                        console.log(post);
+                    })
+                    
                 });
             });
         });
@@ -112,9 +117,9 @@ io.on('connection', socket => {
     });
 
     //like a post
-    socket.on('like', postId =>{
-        console.log(postId);
-        redisClient.hincrby(postId,'likeCount',1);
+    socket.on('like', data =>{
+        redisClient.sadd(('likes:'+data.postId.slice(5)), data.userKey);
+        //redisClient.hincrby(postId,'likeCount',1);
         /* redisClient.hgetall(postId,(err,post)=>{
             consoleError(err);
             post['id'] = postId;

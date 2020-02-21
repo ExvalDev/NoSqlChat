@@ -8,6 +8,7 @@ import {BehaviorSubject} from "rxjs";
 export class MainSocketService {
   public posts$: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
   private socket: SocketIOClient.Socket = io(environment.socketHost);
+  public userKey: String = localStorage.getItem('userKey'); 
 
   constructor() {
     
@@ -29,13 +30,18 @@ export class MainSocketService {
     console.log('addPostSocket');
     this.socket.emit('post', JSON.stringify(post));
   }
-  /*
-  public plusLike(postId:String){
-    this.socket.emit('like',postId);
+  
+  /**
+   * socket function like post
+   * @param postId 
+   */
+  public like(postId:String){
+    var likeUserKey = "user:2"
+    this.socket.emit('like',{postId:postId, userKey:likeUserKey});
     
   }
 
-  */
+
   public close(): void {
     this.socket.close();
     this.posts$.complete();

@@ -44,9 +44,10 @@ export class EntrySocketService {
     this.socket.on('loginFailed',(err)=>{
       console.log(err);
     })
-    this.socket.on('loginDone',(userKey)=>{
+    this.socket.on('loginDone',(userKey:string)=>{
       console.log('login complete');
       localStorage.setItem('userKey',userKey);
+      console.log(localStorage.getItem('userKey'));
       window.location.reload();
     })
   }
