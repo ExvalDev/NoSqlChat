@@ -2,22 +2,26 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import {environment} from "../../environments/environment";
 import {Post} from "./_interfaces/post";
+import {User} from "../_interfaces/user";
 import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class MainSocketService {
   public posts$: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
+  public user$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   private socket: SocketIOClient.Socket = io(environment.socketHost);
   public userKey: String = localStorage.getItem('userKey'); 
 
   constructor() {
-    
     /* Run after page opening */
     this.socket.on('post', (rawPost: string) => {
       const posts = this.posts$.getValue();
       posts.unshift(JSON.parse(rawPost));
       this.posts$.next(posts);
     });
+    this.socket.on('userData', (rawUser: string) =>{
+      this.user$.next(JSON.parse(rawUser));
+    })
   }
 
   public allPosts(){
@@ -39,6 +43,10 @@ export class MainSocketService {
     var likeUserKey = "user:2"
     this.socket.emit('like',{postId:postId, userKey:likeUserKey});
     
+  }
+
+  public getUser(userKey:string){
+    this.socket.emit('getUser',userKey);
   }
 
 

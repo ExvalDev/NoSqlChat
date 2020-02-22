@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainSocketService } from "./main-socket.service";
+import { User } from "../_interfaces/user";
 
 @Component({
   selector: 'app-main-page',
@@ -8,14 +9,20 @@ import { MainSocketService } from "./main-socket.service";
   providers: [MainSocketService]
 })
 export class MainPageComponent implements OnInit, OnDestroy {
+  public user: User;
 
-  constructor(private socket: MainSocketService) { }
+  constructor(private mainSocket: MainSocketService) {
+    
+   }
 
   ngOnInit() {
+    this.mainSocket.getUser(localStorage.getItem('userKey'));
+    console.log(localStorage.getItem('userKey'));
+    this.mainSocket.user$.subscribe(user => this.user = user[0]);
   }
 
   ngOnDestroy(): void {
-    this.socket.close();
+    this.mainSocket.close();
   }
 
 

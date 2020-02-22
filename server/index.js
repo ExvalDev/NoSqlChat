@@ -71,12 +71,18 @@ io.on('connection', socket => {
                 console.log(key);
                 redisClient.hgetall(key,(err, checkUser)=>{
                     if(checkUser.password == user.password){
-                        io.emit('loginDone');
+                        io.emit('loginDone',key);
                     }else{
                         io.emit('loginFailed', 'wrongPassword');
                     }
                 }); 
             }
+        });
+    });
+
+    socket.on('getUser', userKey =>{
+        redisClient.hgetall(userKey, user =>{
+            io.emit('userData',JSON.stringify(user));
         });
     });
 
