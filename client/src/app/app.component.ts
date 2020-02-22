@@ -8,10 +8,12 @@ import { EntrySocketService } from "./landing-page/entry-socket.service";
   providers: [EntrySocketService]
 })
 export class AppComponent implements OnInit{
-  public authenticated:boolean;
+  public authenticated:boolean = false;
   title = 'client';
   constructor(private entrySocket: EntrySocketService){
+    console.log('app: ' + localStorage.getItem('userKey'));
     if (localStorage.getItem('userKey') != undefined) {
+     
       this.authenticated = true;
     }
   }
