@@ -9,14 +9,14 @@ import { User } from "../../../_interfaces/user";
   providers: [MainSocketService]
 })
 export class ProfileComponent implements OnInit {
-  @Input() public user: User | null = null;
+  public user: User | null = null;
 
   constructor(private mainSocket: MainSocketService) {
-    
+    this.mainSocket.getUser(localStorage.getItem('userKey'));
   }
 
   ngOnInit() {
-    
+    this.mainSocket.user$.subscribe(user => this.user = user);
   }
 
 }
