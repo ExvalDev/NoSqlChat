@@ -63,6 +63,9 @@ io.on('connection', socket => {
         });     
     });
 
+    /**
+     * login user 
+     */
     socket.on('login', user=>{
         redisClient.hget('users', user.username,(err,key)=>{
             if (err){
@@ -80,6 +83,9 @@ io.on('connection', socket => {
         });
     });
 
+    /**
+     * Get userData for Frontend 
+     */
     socket.on('getUser', userKey =>{
         console.log(userKey);
         redisClient.hgetall(userKey, (err,user) =>{
@@ -110,6 +116,9 @@ io.on('connection', socket => {
         });
     });
     
+    /**
+     * post an new Post 
+     */
     socket.on('post', postAsJson => {
         const post = JSON.parse(postAsJson);
         console.log(post);
