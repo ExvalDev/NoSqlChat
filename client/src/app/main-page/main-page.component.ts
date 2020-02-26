@@ -9,20 +9,23 @@ import { User } from "../_interfaces/user";
   providers: [MainSocketService]
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  public user: User;
+  public feed:string = 'mainfeed';
+  
 
   constructor(private mainSocket: MainSocketService) {
     
    }
 
   ngOnInit() {
-    this.mainSocket.getUser(localStorage.getItem('userKey'));
-    console.log(localStorage.getItem('userKey'));
-    this.mainSocket.user$.subscribe(user => this.user = user[0]);
+    
   }
 
   ngOnDestroy(): void {
     this.mainSocket.close();
+  }
+
+  chooseFeed(feedName:string){
+    this.feed = feedName;
   }
 
 

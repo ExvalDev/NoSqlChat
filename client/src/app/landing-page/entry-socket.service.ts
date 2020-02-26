@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
+import {Md5} from 'ts-md5/dist/md5';
 import {environment} from "../../environments/environment";
 import {User} from "../_interfaces/user";
 import {BehaviorSubject, Subject} from "rxjs";
@@ -23,7 +24,8 @@ export class EntrySocketService {
    * @memberof EntrySocketService
    */
   public register(username: string, password:string){
-    this.socket.emit('register',{username:username, password:password});
+    const hashPW = Md5.hashStr(password);
+    this.socket.emit('register',{username:username, password:hashPW});
     this.socket.on('registerFailed', () =>{
       return 'failed';
     });
@@ -40,7 +42,8 @@ export class EntrySocketService {
    * @memberof EntrySocketService
    */
   public login(username:string, password:string){
-    this.socket.emit('login',{username:username, password:password});
+    const hashPW = Md5.hashStr(password);
+    this.socket.emit('login',{username:username, password:hashPW});
     this.socket.on('loginFailed',(err)=>{
       console.log(err);
     })
