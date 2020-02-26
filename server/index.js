@@ -87,13 +87,23 @@ io.on('connection', socket => {
      * Get userData for Frontend 
      */
     socket.on('getUser', userKey =>{
-        console.log(userKey);
-        redisClient.hgetall(userKey, (err,user) =>{
+        userId = userKey.slice(5);
+        redisClient.hget(userKey,'username', (err,username) =>{
             let sendUser = {}; 
-            sendUser.username = user.username;
-            io.emit('userData',JSON.stringify(sendUser));
+            sendUser.username = username;
+            redisClient.scard('follower:'+ userId, (err,followerCount)=>{
+                sendUser.followerCount = followerCount;
+                redisClient.scard('following:'+ userId, (err,followingCount)=>{
+                    sendUser.followingCount = followingCount;
+                    io.emit('userData',JSON.stringify(sendUser));
+                });
+            });   
+        });
+        redisClient.smembers('follower:'+ userId, (err,follower)=>{
+
         });
     });
+
 
     // send all posts
     socket.on('allPosts', ()=>{
@@ -173,6 +183,14 @@ io.on('connection', socket => {
             post['id'] = postId;
             io.emit('post',JSON.stringify(post));
         }); */
+    });
+
+    socket.on('follow', (userKeys)=>{
+        const followUserId = userKeys.followUser.slice(5);
+        const followingUserId = userKeys.followingUser.slice(5);
+        
+        redisClient.sadd('follower:' + followUserId, userKeys.followingUser);
+        redisClient.sadd('following:' + followingUserId, userKeys.followUser);
     });
 
 

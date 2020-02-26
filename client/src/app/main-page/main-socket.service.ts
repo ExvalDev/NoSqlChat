@@ -73,6 +73,14 @@ export class MainSocketService implements OnInit{
     })
   }
 
+  public follow(followUser:string){
+    if (followUser != this.userKey) {
+      this.socket.emit('follow', {followUser:followUser, followingUser:this.userKey});
+    } else {
+      alert ('du kannst dir nicht selber folgen!');
+    }
+  }
+
 
   public close(): void {
     this.socket.close();

@@ -5,21 +5,16 @@
   </div>
 </div>
 <div class="row text-center mx-2">
-  <div class="col-4">
-    <h2>17</h2>
-    <span><small>posts</small></span>
+  <div class="col-6">
+    <h2>{{user.followingCount}}</h2>
+    <!-- <span><small>following</small></span> -->
   </div>
-  <div class="col-4">
-    <h2>17</h2>
-    <span><small>following</small></span>
-  </div>
-  <div class="col-4">
-    <h2>17</h2>
-    <span><small>follower</small></span>
+  <div class="col-6">
+    <h2>{{user.followerCount}}</h2>
+    <!-- <span><small>follower</small></span> -->
   </div>
 </div>
-<div class="btn-group mt-3 w-100 rounded-0">
-  <button id="selectLogin" type="button" class="btn feedBtnActive rounded-0" >Follower</button>
+<div class="btn-group mt-0 w-100 rounded-0">
   <button id="selectRegister" type="button" class="btn feedBtn rounded-0" >Following</button>
-  
+  <button id="selectLogin" type="button" class="btn feedBtnActive rounded-0" >Follower</button>
 </div>

@@ -10,6 +10,7 @@ import { MainSocketService } from "../../main-socket.service";
 })
 export class PostComponent implements OnInit {
   @Input() public post: Post | null = null;
+  public userKey: String = localStorage.getItem('userKey');
   
 
   constructor(private mainSocket: MainSocketService) { }
@@ -19,6 +20,10 @@ export class PostComponent implements OnInit {
 
   like(post:string){
     this.mainSocket.like(post);
+  }
+
+  follow(followUser:string){
+    this.mainSocket.follow(followUser);
   }
 
 }

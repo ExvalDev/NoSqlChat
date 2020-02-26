@@ -3,7 +3,7 @@
     <!-- <img src="" class="align-self-end mr-3" alt="Profil"> -->
     <div class="media-body">
       <span class="mt-0 font-weight-bold">{{post.username}}</span>
-      <button type="button" name="" id="" class="btn btn-outline-primary btn-sm ml-2"> Follow </button>
+      <button *ngIf="post.userKey != userKey" (click)="follow(post.userKey)" type="button"  class="btn btn-outline-primary btn-sm ml-2"> Follow </button>
     </div>
   </div>
   <img class="card-img-top" src="holder.js/100px180/" alt="">
