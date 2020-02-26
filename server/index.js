@@ -115,6 +115,29 @@ io.on('connection', socket => {
             });
         });
     });
+
+    // send posts from user
+    socket.on('personalPosts', (userKey)=>{
+        redisClient.keys('post:*',(err,posts)=>{
+            consoleError(err);
+            /* console.log(posts); */
+            posts.forEach(postKey => {
+                redisClient.hgetall(postKey,(err,post)=>{
+                    post['id'] = postKey;
+                    redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
+                        post['likeCount'] = likeCount;
+                        if (post.userKey == userKey) {
+                            redisClient.hgetall(post.userKey,(err,user)=>{
+                                post['username'] = user.username;
+                                io.emit('post',JSON.stringify(post));
+                                console.log(post);
+                            });
+                        }     
+                    });                
+                });
+            });
+        });
+    });
     
     /**
      * post an new Post 

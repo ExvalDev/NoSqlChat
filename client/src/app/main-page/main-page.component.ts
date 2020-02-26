@@ -9,6 +9,7 @@ import { User } from "../_interfaces/user";
   providers: [MainSocketService]
 })
 export class MainPageComponent implements OnInit, OnDestroy {
+  public feed:string = 'mainfeed';
   
 
   constructor(private mainSocket: MainSocketService) {
@@ -21,6 +22,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.mainSocket.close();
+  }
+
+  chooseFeed(feedName:string){
+    this.feed = feedName;
   }
 
 

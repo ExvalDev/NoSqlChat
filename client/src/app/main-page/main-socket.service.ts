@@ -29,9 +29,22 @@ export class MainSocketService implements OnInit{
     
   }
   
-
+  /**
+   * Return all Posts 
+   *
+   * @memberof MainSocketService
+   */
   public allPosts(){
     this.socket.emit('allPosts');
+  }
+
+  /**
+   * Return own Posts
+   *
+   * @memberof MainSocketService
+   */
+  public personalPosts(){
+    this.socket.emit('personalPosts', this.userKey);
   }
 
   /* functions between socket and server socket */
