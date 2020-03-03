@@ -5,8 +5,7 @@ import { LandingPageComponent } from '../landing-page.component';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
-  providers: [EntrySocketService]
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
 

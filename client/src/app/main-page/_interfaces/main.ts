@@ -6,3 +6,8 @@ export interface Post {
   userKey?: string;
   username?: string;
 }
+
+export interface Follower {
+  userKey: string;
+  username: string;
+}

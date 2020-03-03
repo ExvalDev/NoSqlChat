@@ -6,8 +6,7 @@ import { MainSocketService } from "../../main-socket.service";
 @Component({
   selector: 'app-post-form',
   templateUrl: './post-form.component.html',
-  styleUrls: ['./post-form.component.scss'],
-  providers: [MainSocketService]
+  styleUrls: ['./post-form.component.scss']
 })
 export class PostFormComponent implements OnInit {
 
