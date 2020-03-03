@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 
 
 io.on('connection', socket => {
-    /* console.log('a user connected'); */
+    console.log('a user connected '+ socket.id);
 
     /**
      * register user 
@@ -87,19 +87,22 @@ io.on('connection', socket => {
      * Get userData for Frontend 
      */
     socket.on('getUser', userKey =>{
-        console.log(userKey);
-        redisClient.hgetall(userKey, (err,user) =>{
+        userId = userKey.slice(5);
+        redisClient.hget(userKey,'username', (err,username) =>{
             let sendUser = {}; 
-            sendUser.username = user.username;
-            io.emit('userData',JSON.stringify(sendUser));
+            sendUser.username = username;
+            io.emit('userData',JSON.stringify(sendUser));         
         });
     });
+
 
     // send all posts
     socket.on('allPosts', ()=>{
         redisClient.keys('post:*',(err,posts)=>{
             consoleError(err);
-            /* console.log(posts); */
+            posts.sort((a, b)=>{ 
+                return (a.slice(5) - b.slice(5) );
+            });
             posts.forEach(postKey => {
                 redisClient.hgetall(postKey,(err,post)=>{
                     post['id'] = postKey;
@@ -108,7 +111,7 @@ io.on('connection', socket => {
                         redisClient.hgetall(post.userKey,(err,user)=>{
                             post['username'] = user.username;
                             io.emit('post',JSON.stringify(post));
-                            console.log(post);
+                            /* console.log(post); */
                         })    
                     })                
                 });
@@ -131,7 +134,7 @@ io.on('connection', socket => {
                             redisClient.hgetall(post.userKey,(err,user)=>{
                                 post['username'] = user.username;
                                 io.emit('post',JSON.stringify(post));
-                                console.log(post);
+                                /* console.log(post); */
                             });
                         }     
                     });                
@@ -139,6 +142,38 @@ io.on('connection', socket => {
             });
         });
     });
+
+    socket.on('getFollower', (userKey)=>{
+        const UserId = userKey.slice(5);
+        redisClient.smembers('follower:'+UserId,(err,followers)=>{
+            consoleError(err);
+            followers.forEach(follower =>{
+                var submitFollower = {};
+                submitFollower['userKey'] = follower;
+                redisClient.hget(follower,'username',(err,username) =>{
+                    consoleError(err);
+                    submitFollower['username'] = username;
+                    io.emit('follower',JSON.stringify(submitFollower));
+                })
+            })
+        })
+    })
+
+    socket.on('getFollowing', (userKey)=>{
+        const UserId = userKey.slice(5);
+        redisClient.smembers('following:'+UserId,(err,followings)=>{
+            consoleError(err);
+            followings.forEach(following =>{
+                var submitFollowing = {};
+                submitFollowing['userKey'] = following;
+                redisClient.hget(following,'username',(err,username) =>{
+                    consoleError(err);
+                    submitFollowing['username'] = username;
+                    io.emit('following',JSON.stringify(submitFollowing));
+                })
+            })
+        })
+    })
     
     /**
      * post an new Post 
@@ -168,6 +203,25 @@ io.on('connection', socket => {
     //like a post
     socket.on('like', data =>{
         redisClient.sadd(('likes:'+data.postId.slice(5)), data.userKey);
+    });
+
+    socket.on('follow', (userKeys)=>{
+        const followUserId = userKeys.followUser.slice(5);
+        const followingUserId = userKeys.followingUser.slice(5);
+        
+        redisClient.sadd('follower:' + followUserId, userKeys.followingUser);
+        redisClient.sadd('following:' + followingUserId, userKeys.followUser);
+
+        var submitFollowing = {};
+        submitFollowing['userKey'] = userKeys.followUser;
+        redisClient.hget(userKeys.followUser,'username',(err,username) =>{
+            consoleError(err);
+            submitFollowing['username'] = username;
+            io.emit('following',JSON.stringify(submitFollowing));
+        })
+
+        
+
     });
 
 
