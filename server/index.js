@@ -54,8 +54,8 @@ io.on('connection', socket => {
                     /* redisClient.hgetall('users',(err,result)=>{
                         console.log(result);
                     }); */
-                    user['id'] = userKey;
-                    io.emit('registered', JSON.stringify(user));
+                    
+                    io.emit('registered', userKey);
                 });   
             }else {
                 io.emit('registerFailed');

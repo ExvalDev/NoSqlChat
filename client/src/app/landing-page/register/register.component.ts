@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {EntrySocketService} from "../entry-socket.service";
+import { LandingPageComponent } from '../landing-page.component';
 
 @Component({
   selector: 'app-register',
@@ -15,8 +16,6 @@ export class RegisterComponent implements OnInit {
 
   register(username:string, password:string, passwordCheck:string){
     if (password == passwordCheck){
-      /* alert(username + ' ' + password); */
-      
       this.socket.register(username,password);
     }
   }
