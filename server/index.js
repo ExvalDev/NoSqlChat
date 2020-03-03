@@ -100,7 +100,6 @@ io.on('connection', socket => {
                         io.emit('post',JSON.stringify(post));
                         console.log(post);
                     })
-                    
                 });
             });
         });
@@ -125,12 +124,6 @@ io.on('connection', socket => {
     //like a post
     socket.on('like', data =>{
         redisClient.sadd(('likes:'+data.postId.slice(5)), data.userKey);
-        //redisClient.hincrby(postId,'likeCount',1);
-        /* redisClient.hgetall(postId,(err,post)=>{
-            consoleError(err);
-            post['id'] = postId;
-            io.emit('post',JSON.stringify(post));
-        }); */
     });
 
 

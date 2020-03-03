@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import {Post} from "./_interfaces/post";
 import {User} from "../_interfaces/user";
 import {BehaviorSubject} from "rxjs";
+import * as $ from "jquery";
 
 @Injectable()
 export class MainSocketService {
@@ -40,9 +41,7 @@ export class MainSocketService {
    * @param postId 
    */
   public like(postId:String){
-    var likeUserKey = "user:2"
-    this.socket.emit('like',{postId:postId, userKey:likeUserKey});
-    
+    this.socket.emit('like',{postId:postId, userKey:this.userKey});
   }
 
   public getUser(userKey:string){
