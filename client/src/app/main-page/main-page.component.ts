@@ -24,11 +24,21 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.mainSocket.close();
   }
 
+  /**
+   * Choose a Feed on Frontend
+   *
+   * @param {string} feedName
+   * @memberof MainPageComponent
+   */
   chooseFeed(feedName:string){
     this.feed = feedName;
   }
 
-
+  /**
+   * Logout from View 
+   *
+   * @memberof MainPageComponent
+   */
   logout(){
     localStorage.removeItem('userKey');
     window.location.reload();

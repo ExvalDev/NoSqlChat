@@ -57,6 +57,7 @@ export class MainSocketService implements OnInit{
   /**
    * socket function like post
    * @param postId 
+   * 
    */
   public like(postId:String){
     var likeUserKey = "user:2"
