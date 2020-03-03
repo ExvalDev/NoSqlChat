@@ -126,6 +126,7 @@ io.on('connection', socket => {
                     post['id'] = postKey;
                     redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
                         post['likeCount'] = likeCount;
+
                         if (post.userKey == userKey) {
                             redisClient.hgetall(post.userKey,(err,user)=>{
                                 post['username'] = user.username;
@@ -167,12 +168,6 @@ io.on('connection', socket => {
     //like a post
     socket.on('like', data =>{
         redisClient.sadd(('likes:'+data.postId.slice(5)), data.userKey);
-        //redisClient.hincrby(postId,'likeCount',1);
-        /* redisClient.hgetall(postId,(err,post)=>{
-            consoleError(err);
-            post['id'] = postId;
-            io.emit('post',JSON.stringify(post));
-        }); */
     });
 
 
