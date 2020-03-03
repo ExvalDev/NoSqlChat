@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import {Md5} from 'ts-md5/dist/md5';
 import {environment} from "../../environments/environment";
-import {User} from "../_interfaces/user";
-import {BehaviorSubject, Subject} from "rxjs";
 
 
 @Injectable({
