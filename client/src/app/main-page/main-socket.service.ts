@@ -5,7 +5,7 @@ import {Post} from "./_interfaces/main";
 import {Follower} from "./_interfaces/main";
 import {User} from "../_interfaces/user";
 import {BehaviorSubject} from "rxjs";
-import * as $ from "jquery";
+
 
 @Injectable({
   providedIn: 'root'

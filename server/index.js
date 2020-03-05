@@ -68,7 +68,7 @@ io.on('connection', socket => {
      */
     socket.on('login', user=>{
         redisClient.hget('users', user.username,(err,key)=>{
-            if (err){
+            if (key==null){
                 io.emit('loginFailed', 'userNotFound');
             }else{
                 console.log(key);

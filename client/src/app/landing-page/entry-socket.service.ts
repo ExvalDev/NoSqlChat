@@ -49,6 +49,7 @@ export class EntrySocketService {
     const hashPW = Md5.hashStr(password);
     this.socket.emit('login',{username:username, password:hashPW});
     this.socket.on('loginFailed',(err)=>{
+      document.getElementById('errorUsername').style.display = 'block';
       console.log(err);
     })
     this.socket.on('loginDone',(userKey:string)=>{

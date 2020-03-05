@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MainSocketService } from "../../main-socket.service";
+import * as $ from "jquery";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 
 
