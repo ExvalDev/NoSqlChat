@@ -108,11 +108,14 @@ io.on('connection', socket => {
                     post['id'] = postKey;
                     redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
                         post['likeCount'] = likeCount;
-                        redisClient.hgetall(post.userKey,(err,user)=>{
-                            post['username'] = user.username;
-                            io.emit('post',JSON.stringify(post));
-                            /* console.log(post); */
-                        })    
+                        redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                            post['dislikeCount'] = dislikeCount;
+                            redisClient.hgetall(post.userKey,(err,user)=>{
+                                post['username'] = user.username;
+                                io.emit('post',JSON.stringify(post));
+                                console.log(post);
+                            }) 
+                        });
                     })                
                 });
             });
@@ -129,14 +132,16 @@ io.on('connection', socket => {
                     post['id'] = postKey;
                     redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
                         post['likeCount'] = likeCount;
-
-                        if (post.userKey == userKey) {
-                            redisClient.hgetall(post.userKey,(err,user)=>{
-                                post['username'] = user.username;
-                                io.emit('post',JSON.stringify(post));
-                                /* console.log(post); */
-                            });
-                        }     
+                        redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                            post['dislikeCount'] = dislikeCount;
+                            if (post.userKey == userKey) {
+                                redisClient.hgetall(post.userKey,(err,user)=>{
+                                    post['username'] = user.username;
+                                    io.emit('post',JSON.stringify(post));
+                                    /* console.log(post); */
+                                });
+                            }
+                        });     
                     });                
                 });
             });
@@ -190,11 +195,14 @@ io.on('connection', socket => {
             post['id'] = postKey;
             redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
                 post['likeCount'] = likeCount;
-                redisClient.hgetall(post.userKey,(err,user)=>{
-                    post['username'] = user.username;
-                    io.emit('post',JSON.stringify(post));
-                    console.log(post);
-                })    
+                redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                    post['dislikeCount'] = dislikeCount;
+                    redisClient.hgetall(post.userKey,(err,user)=>{
+                        post['username'] = user.username;
+                        io.emit('post',JSON.stringify(post));
+                        console.log(post);
+                    })   
+                }); 
             })
         });
         
@@ -203,6 +211,11 @@ io.on('connection', socket => {
     //like a post
     socket.on('like', data =>{
         redisClient.sadd(('likes:'+data.postId.slice(5)), data.userKey);
+    });
+
+    //dislike a post
+    socket.on('dislike', data =>{
+        redisClient.sadd(('dislikes:'+data.postId.slice(5)), data.userKey);
     });
 
     socket.on('follow', (userKeys)=>{

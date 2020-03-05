@@ -22,6 +22,10 @@ export class PostComponent implements OnInit {
     this.mainSocket.like(post);
   }
 
+  dislike(post:string){
+    this.mainSocket.dislike(post);
+  }
+
   follow(followUser:string){
     this.mainSocket.follow(followUser);
   }
