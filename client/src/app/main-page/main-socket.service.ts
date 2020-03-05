@@ -81,6 +81,10 @@ export class MainSocketService {
     this.socket.emit('like',{postId:postId, userKey:this.userKey});
   }
 
+  public dislike(postId:String){
+    this.socket.emit('dislike',{postId:postId, userKey:this.userKey});
+  }
+
   public getUser(userKey:string){
     this.socket.emit('getUser',userKey);
     this.socket.emit('getFollower', userKey);

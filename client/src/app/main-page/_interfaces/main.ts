@@ -3,6 +3,7 @@ export interface Post {
   title:string;
   content:string;
   likeCount?:string;
+  dislikeCount?:string;
   userKey?: string;
   username?: string;
 }
