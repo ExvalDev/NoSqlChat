@@ -39,6 +39,8 @@ export class MainPageComponent implements OnInit {
    */
   logout(){
     localStorage.removeItem('userKey');
+    localStorage.removeItem('userLikes');
+    localStorage.removeItem('userDislikes');
     window.location.reload();
   }
 

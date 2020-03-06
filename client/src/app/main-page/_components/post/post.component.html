@@ -15,8 +15,8 @@
   </div>
   <div class="card-footer py-0">
     <div class="btn-group pt-1 rounded-0">
-      <button id="like" type="button" class="btn" (click)="like(post.id)"><h5><i class="far fa-smile"></i> <span id="likeCount" class="badge badge-light">{{post.likeCount}}</span></h5></button>
-      <button id="dislike" type="button" class="btn" (click)="dislike(post.id)"><h5><i class="fas fa-poo"></i><span id="dislikeCount" class="badge badge-light">{{post.dislikeCount}}</span></h5></button>
+      <button id="like" type="button" class="btn" (click)="like(post.id)"><h5 id="likeArea{{post.id}}"><i class="far fa-smile"></i> <span id="likeCount{{post.id}}" class="badge badge-light">{{post.likeCount}}</span></h5></button>
+      <button id="dislike" type="button" class="btn" (click)="dislike(post.id)"><h5 id="dislikeArea{{post.id}}"><i class="fas fa-poo"></i><span id="dislikeCount{{post.id}}" class="badge badge-light">{{post.dislikeCount}}</span></h5></button>
     </div>
   </div>
 </div>
