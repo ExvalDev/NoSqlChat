@@ -11,7 +11,7 @@ export class MainfeedComponent implements OnInit {
   public posts: Post[] = [];
 
   constructor(private mainSocket: MainSocketService) { 
-    this.mainSocket.allPosts();
+    
   }
 
   ngOnInit(): void {

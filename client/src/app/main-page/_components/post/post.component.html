@@ -2,7 +2,7 @@
   <div class="card-header media">   
     <!-- <img src="" class="align-self-end mr-3" alt="Profil"> -->
     <div class="media-body">
-      <span class="mt-0 font-weight-bold">{{post.username}}</span>
+      <span class="mt-0 ml-3 font-weight-bold">{{post.username}}</span>
       <button *ngIf="post.userKey != userKey" (click)="follow(post.userKey)" type="button"  class="btn btn-outline-primary btn-sm ml-2"> Follow </button>
     </div>
   </div>
@@ -11,7 +11,7 @@
     
     <h4 class="card-title">{{post.title}} <!-- {{post.id}} --></h4>
     <p class="card-text">{{post.content}}</p>
-    <p class="card-text float-right"><small class="text-muted">created at 07.02.2020</small></p>
+    
   </div>
   <div class="card-footer py-0">
     <div class="btn-group pt-1 rounded-0">

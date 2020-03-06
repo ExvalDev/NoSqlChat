@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MainSocketService } from "../../main-socket.service";
+import { Post } from "../../_interfaces/main";
 
 @Component({
   selector: 'app-timeline',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent implements OnInit {
+  public posts: Post[] = [];
 
-  constructor() { }
+  constructor(private mainSocket: MainSocketService) { }
 
   ngOnInit() {
+    this.mainSocket.timelinePosts$.subscribe(posts => this.posts = posts);
   }
 
 }

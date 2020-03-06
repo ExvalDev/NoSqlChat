@@ -11,7 +11,7 @@ export class MainPageComponent implements OnInit {
   
 
   constructor(private mainSocket: MainSocketService) {
-    
+      this.mainSocket.allPosts();
    }
 
   ngOnInit() {

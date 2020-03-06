@@ -82,6 +82,7 @@ io.on('connection', socket => {
             }
         });
     });
+    
 
     /**
      * Get userData for Frontend 
@@ -126,23 +127,60 @@ io.on('connection', socket => {
     socket.on('personalPosts', (userKey)=>{
         redisClient.keys('post:*',(err,posts)=>{
             consoleError(err);
+            posts.sort((a, b)=>{ 
+                return (a.slice(5) - b.slice(5) );
+            });
             /* console.log(posts); */
             posts.forEach(postKey => {
                 redisClient.hgetall(postKey,(err,post)=>{
-                    post['id'] = postKey;
-                    redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
-                        post['likeCount'] = likeCount;
-                        redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
-                            post['dislikeCount'] = dislikeCount;
-                            if (post.userKey == userKey) {
+                    if (post.userKey == userKey) {
+                        post['id'] = postKey;
+                        redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
+                            post['likeCount'] = likeCount;
+                            redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                                post['dislikeCount'] = dislikeCount;                         
                                 redisClient.hgetall(post.userKey,(err,user)=>{
                                     post['username'] = user.username;
-                                    io.emit('post',JSON.stringify(post));
+                                    io.emit('personalPost',JSON.stringify(post));
                                     /* console.log(post); */
+                                }); 
+                            });     
+                        });
+                    }                
+                });
+            });
+        });
+    });
+
+    // send posts from user
+    socket.on('timelinePosts', (userKey)=>{
+        redisClient.keys('post:*',(err,posts)=>{
+            consoleError(err);
+            posts.sort((a, b)=>{ 
+                return (a.slice(5) - b.slice(5) );
+            });
+            /* console.log(posts); */
+            posts.forEach(postKey => {
+                redisClient.hgetall(postKey,(err,post)=>{
+                    const UserId = userKey.slice(5);
+                    redisClient.smembers('following:'+UserId,(err,followings)=>{
+                        followings.forEach(follower =>{
+                            if (post.userKey == follower) {
+                                post['id'] = postKey;
+                                redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
+                                    post['likeCount'] = likeCount;
+                                    redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                                        post['dislikeCount'] = dislikeCount;                         
+                                        redisClient.hgetall(post.userKey,(err,user)=>{
+                                            post['username'] = user.username;
+                                            io.emit('timelinePost',JSON.stringify(post));
+                                            /* console.log(post); */
+                                        }); 
+                                    });     
                                 });
                             }
-                        });     
-                    });                
+                        });   
+                    });               
                 });
             });
         });
