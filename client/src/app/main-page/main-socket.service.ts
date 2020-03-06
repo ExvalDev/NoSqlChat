@@ -4,14 +4,16 @@ import {environment} from "../../environments/environment";
 import {Post} from "./_interfaces/main";
 import {Follower} from "./_interfaces/main";
 import {User} from "../_interfaces/user";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, EMPTY} from "rxjs";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class MainSocketService {
+export class MainSocketService{
   public posts$: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
+  public timelinePosts$: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
+  public personalPosts$: BehaviorSubject<Post[]> = new BehaviorSubject<Post[]>([]);
   public followers$: BehaviorSubject<Follower[]> = new BehaviorSubject<Follower[]>([]);
   public followings$: BehaviorSubject<Follower[]> = new BehaviorSubject<Follower[]>([]);
   public user$: BehaviorSubject<User> = new BehaviorSubject<User>({username: 'noName'});
@@ -19,11 +21,24 @@ export class MainSocketService {
   public userKey: String = localStorage.getItem('userKey'); 
 
   constructor() {
+    
     /* Run after page opening */
     this.socket.on('post', (rawPost: string) => {
       const posts = this.posts$.getValue();
       posts.unshift(JSON.parse(rawPost));
       this.posts$.next(posts);
+    });
+
+    this.socket.on('timelinePost', (rawPost: string) => {
+      const posts = this.timelinePosts$.getValue();
+      posts.unshift(JSON.parse(rawPost));
+      this.timelinePosts$.next(posts);
+    });
+
+    this.socket.on('personalPost', (rawPost: string) => {
+      const posts = this.personalPosts$.getValue();
+      posts.unshift(JSON.parse(rawPost));
+      this.personalPosts$.next(posts);
     });
 
     this.socket.on('follower', (rawFollower: string) => {
@@ -53,18 +68,11 @@ export class MainSocketService {
    */
   public allPosts(){
     this.socket.emit('allPosts');
-  }
-
-  /**
-   * Return own Posts
-   *
-   * @memberof MainSocketService
-   */
-  public personalPosts(){
     this.socket.emit('personalPosts', this.userKey);
+    this.socket.emit('timelinePosts', this.userKey);
   }
 
-  
+
   /* functions between socket and server socket */
   
   public addPost(post: object) {

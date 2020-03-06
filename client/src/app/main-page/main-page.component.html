@@ -19,12 +19,13 @@
       </div>
       <div class="btn-group my-3 w-100 rounded-0">
         <button (click)="chooseFeed('mainfeed')" id="selectLogin" type="button" [className]="feed == 'mainfeed' ? 'btn feedBtnActive rounded-0' : 'btn feedBtn rounded-0'" >Mainfeed</button>
-        <button id="selectRegister" type="button" class="btn feedBtn" >Timeline</button>
+        <button (click)="chooseFeed('timeline')" id="selectRegister" type="button" [className]="feed == 'timeline' ? 'btn feedBtnActive rounded-0' : 'btn feedBtn rounded-0'" >Timeline</button>
         <button (click)="chooseFeed('personalPosts')" id="selectRegister" type="button" [className]="feed == 'personalPosts' ? 'btn feedBtnActive rounded-0' : 'btn feedBtn rounded-0'" >Your own Posts</button>
       </div>
       <!-- Feed -->
       <div id="feed" class="px-5">
         <app-mainfeed *ngIf="feed == 'mainfeed'"></app-mainfeed>
+        <app-timeline *ngIf="feed == 'timeline'"></app-timeline>
         <app-personal-posts *ngIf="feed == 'personalPosts'"></app-personal-posts>
 
       </div>

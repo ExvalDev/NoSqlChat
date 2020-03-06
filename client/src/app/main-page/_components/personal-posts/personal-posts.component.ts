@@ -11,11 +11,11 @@ export class PersonalPostsComponent implements OnInit {
   public posts: Post[] = [];
 
   constructor(private mainSocket: MainSocketService) { 
-    this.mainSocket.personalPosts();
+    
   }
 
   ngOnInit() {
-    this.mainSocket.posts$.subscribe(posts => this.posts = posts);
+    this.mainSocket.personalPosts$.subscribe(posts => this.posts = posts);
   }
 
 }
