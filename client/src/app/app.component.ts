@@ -10,8 +10,11 @@ import { MainSocketService } from './main-page/main-socket.service';
 })
 export class AppComponent implements OnInit{
   public authenticated:boolean = false;
-  title = 'client';
+  
   constructor(){
+    /**
+    * Authenticate User
+    */
     if (localStorage.getItem('userKey') != undefined) {
       this.authenticated = true;
     }

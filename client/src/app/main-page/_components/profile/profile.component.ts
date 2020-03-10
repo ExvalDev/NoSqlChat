@@ -24,6 +24,12 @@ export class ProfileComponent implements OnInit {
     this.mainSocket.followings$.subscribe(followings => this.followings = followings);
   }
 
+  /**
+   *Change the View of Follower / Following
+   *
+   * @param {string} btn
+   * @memberof ProfileComponent
+   */
   changeFollow(btn:string){
     if (btn == 'Follower') {
       this.showFollow = true;

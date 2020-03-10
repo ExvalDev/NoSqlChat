@@ -14,6 +14,14 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Send Register User Data to Socket
+   *
+   * @param {string} username
+   * @param {string} password
+   * @param {string} passwordCheck
+   * @memberof RegisterComponent
+   */
   register(username:string, password:string, passwordCheck:string){
     if (password == passwordCheck){
       this.socket.register(username,password);

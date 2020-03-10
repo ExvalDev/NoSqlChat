@@ -19,13 +19,17 @@ function consoleError(err){
     }
 }
 
-//actual Post Id
+/**
+ * Show Actual Post Id on start of server 
+ */
 redisClient.get('nextPostId', (error, result) => {
     consoleError(error);
     console.log('Current Post Id Counter: '+result);
 });
 
-//actual User Id
+/**
+ * Show Actual Usser Id on start of server 
+ */
 redisClient.get('nextUserId', (error, result) => {
     consoleError(error);
     console.log('Current User Id Counter: '+result);
@@ -41,20 +45,17 @@ io.on('connection', socket => {
 
     /**
      * register user 
+     * @param user Register data from User
      */
     socket.on('register', user =>{
         redisClient.hexists('users', user.username,(err,result)=>{
+            consoleError(err);
             if (result == 0) {
                 redisClient.incr('nextUserId',(err, res) =>{
                     consoleError(err);
                     const userKey = 'user:'+res;
-                    /* console.log(userKey); */
                     redisClient.hmset(userKey,user);
                     redisClient.hset('users',user.username, userKey);
-                    /* redisClient.hgetall('users',(err,result)=>{
-                        console.log(result);
-                    }); */
-                    
                     io.emit('registered', userKey);
                 });   
             }else {
@@ -64,15 +65,17 @@ io.on('connection', socket => {
     });
 
     /**
-     * login user 
+     * login user
+     * @param user Login data from User
      */
     socket.on('login', user=>{
         redisClient.hget('users', user.username,(err,key)=>{
+            consoleError(err);
             if (key==null){
                 io.emit('loginFailed', 'userNotFound');
             }else{
-                console.log(key);
                 redisClient.hgetall(key,(err, checkUser)=>{
+                    consoleError(err);
                     if(checkUser.password == user.password){
                         io.emit('loginDone',key);
                     }else{
@@ -86,10 +89,12 @@ io.on('connection', socket => {
 
     /**
      * Get userData for Frontend 
+     * @param userKeys
      */
     socket.on('getUser', userKey =>{
         userId = userKey.slice(5);
         redisClient.hget(userKey,'username', (err,username) =>{
+            consoleError(err);
             let sendUser = {}; 
             sendUser.username = username;
             io.emit('userData',JSON.stringify(sendUser));         
@@ -97,7 +102,9 @@ io.on('connection', socket => {
     });
 
 
-    // send all posts
+    /**
+     * Send all Posts to Frontend 
+     */
     socket.on('allPosts', ()=>{
         redisClient.keys('post:*',(err,posts)=>{
             consoleError(err);
@@ -106,15 +113,18 @@ io.on('connection', socket => {
             });
             posts.forEach(postKey => {
                 redisClient.hgetall(postKey,(err,post)=>{
+                    consoleError(err);
                     post['id'] = postKey;
                     redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
+                        consoleError(err);
                         post['likeCount'] = likeCount;
                         redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                            consoleError(err);
                             post['dislikeCount'] = dislikeCount;
                             redisClient.hgetall(post.userKey,(err,user)=>{
+                                consoleError(err);
                                 post['username'] = user.username;
                                 io.emit('post',JSON.stringify(post));
-                                console.log(post);
                             }) 
                         });
                     })                
@@ -123,7 +133,10 @@ io.on('connection', socket => {
         });
     });
 
-    // send posts from user
+    /**
+     * Send all Posts from User to Frontend 
+     * @param userKeys
+     */
     socket.on('personalPosts', (userKey)=>{
         redisClient.keys('post:*',(err,posts)=>{
             consoleError(err);
@@ -133,13 +146,17 @@ io.on('connection', socket => {
             /* console.log(posts); */
             posts.forEach(postKey => {
                 redisClient.hgetall(postKey,(err,post)=>{
+                    consoleError(err);
                     if (post.userKey == userKey) {
                         post['id'] = postKey;
                         redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
+                            consoleError(err);
                             post['likeCount'] = likeCount;
                             redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                                consoleError(err);
                                 post['dislikeCount'] = dislikeCount;                         
                                 redisClient.hgetall(post.userKey,(err,user)=>{
+                                    consoleError(err);
                                     post['username'] = user.username;
                                     io.emit('personalPost',JSON.stringify(post));
                                     /* console.log(post); */
@@ -152,7 +169,10 @@ io.on('connection', socket => {
         });
     });
 
-    // send posts from user
+    /**
+     * Send all Posts from Followed to Frontend 
+     * @param userKeys
+     */
     socket.on('timelinePosts', (userKey)=>{
         redisClient.keys('post:*',(err,posts)=>{
             consoleError(err);
@@ -162,16 +182,21 @@ io.on('connection', socket => {
             /* console.log(posts); */
             posts.forEach(postKey => {
                 redisClient.hgetall(postKey,(err,post)=>{
+                    consoleError(err);
                     const UserId = userKey.slice(5);
                     redisClient.smembers('following:'+UserId,(err,followings)=>{
+                        consoleError(err);
                         followings.forEach(follower =>{
                             if (post.userKey == follower) {
                                 post['id'] = postKey;
                                 redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
+                                    consoleError(err);
                                     post['likeCount'] = likeCount;
                                     redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                                        consoleError(err);
                                         post['dislikeCount'] = dislikeCount;                         
                                         redisClient.hgetall(post.userKey,(err,user)=>{
+                                            consoleError(err);
                                             post['username'] = user.username;
                                             io.emit('timelinePost',JSON.stringify(post));
                                             /* console.log(post); */
@@ -186,6 +211,10 @@ io.on('connection', socket => {
         });
     });
 
+    /**
+     * Send all Follower from User to Frontend 
+     * @param userKeys
+     */
     socket.on('getFollower', (userKey)=>{
         const UserId = userKey.slice(5);
         redisClient.smembers('follower:'+UserId,(err,followers)=>{
@@ -202,6 +231,10 @@ io.on('connection', socket => {
         })
     })
 
+    /**
+     * Send all Following from User to Frontend 
+     * @param userKeys
+     */
     socket.on('getFollowing', (userKey)=>{
         const UserId = userKey.slice(5);
         redisClient.smembers('following:'+UserId,(err,followings)=>{
@@ -219,26 +252,26 @@ io.on('connection', socket => {
     })
     
     /**
-     * post an new Post 
+     * post an new Post
+     * @param postAsJson  
      */
     socket.on('post', postAsJson => {
         const post = JSON.parse(postAsJson);
-        console.log(post);
-        
         redisClient.incr('nextPostId',(err, res) =>{
             consoleError(err);
             const postKey = 'post:'+res;
-            console.log(postKey);
             redisClient.hmset(postKey,post);
             post['id'] = postKey;
             redisClient.scard('likes:'+postKey.slice(5), (err, likeCount) =>{
+                consoleError(err);
                 post['likeCount'] = likeCount;
                 redisClient.scard('dislikes:'+postKey.slice(5), (err, dislikeCount) =>{
+                    consoleError(err);
                     post['dislikeCount'] = dislikeCount;
                     redisClient.hgetall(post.userKey,(err,user)=>{
+                        consoleError(err);
                         post['username'] = user.username;
                         io.emit('post',JSON.stringify(post));
-                        console.log(post);
                     })   
                 }); 
             })
@@ -246,16 +279,26 @@ io.on('connection', socket => {
         
     });
 
-    //like a post
+    /**
+     * like a Post 
+     * @param data PostID
+     */
     socket.on('like', data =>{
         redisClient.sadd(('likes:'+data.postId.slice(5)), data.userKey);
     });
 
-    //dislike a post
+    /**
+     * dislike a Post
+     * @param data PostID 
+     */
     socket.on('dislike', data =>{
         redisClient.sadd(('dislikes:'+data.postId.slice(5)), data.userKey);
     });
 
+    /**
+     * Follow a User
+     * @param userKeys
+     */
     socket.on('follow', (userKeys)=>{
         const followUserId = userKeys.followUser.slice(5);
         const followingUserId = userKeys.followingUser.slice(5);
