@@ -17,9 +17,4 @@ export class MainfeedComponent implements OnInit {
   ngOnInit(): void {
     this.mainSocket.posts$.subscribe(posts => this.posts = posts);
   }
-
-  counter(i:number){
-    return new Array(i);
-  }
-
 }

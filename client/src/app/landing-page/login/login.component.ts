@@ -13,6 +13,13 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Send Login data to Socket
+   *
+   * @param {string} username
+   * @param {string} password
+   * @memberof LoginComponent
+   */
   submitLogin(username:string,password:string){
    this.socket.login(username, password);
   }

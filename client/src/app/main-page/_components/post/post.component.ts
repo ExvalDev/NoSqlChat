@@ -19,6 +19,12 @@ export class PostComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Like a Post
+   *
+   * @param {string} post
+   * @memberof PostComponent
+   */
   like(post:string){
     if(localStorage.getItem("userLikes") != undefined){
       var userLikes = JSON.parse(localStorage.getItem('userLikes'));
@@ -47,6 +53,12 @@ export class PostComponent implements OnInit {
     }
   }
 
+  /**
+   *Dislike a Post
+   *
+   * @param {string} post
+   * @memberof PostComponent
+   */
   dislike(post:string){
     if(localStorage.getItem("userDislikes") != undefined){
       var userDislikes = JSON.parse(localStorage.getItem('userDislikes'));
@@ -73,6 +85,12 @@ export class PostComponent implements OnInit {
     }
   }
 
+  /**
+   *Follow a User
+   *
+   * @param {string} followUser
+   * @memberof PostComponent
+   */
   follow(followUser:string){
     this.mainSocket.follow(followUser);
   }

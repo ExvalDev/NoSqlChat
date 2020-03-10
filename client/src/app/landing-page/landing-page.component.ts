@@ -16,6 +16,12 @@ export class LandingPageComponent implements OnInit {
     this.activeView = true;
   }
 
+  /**
+   * Toggle View Login / Register
+   *
+   * @param {string} view
+   * @memberof LandingPageComponent
+   */
   public toggle(view:string): void {
     if(view == 'login'){
       this.activeView = true;

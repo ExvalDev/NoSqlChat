@@ -22,43 +22,57 @@ export class MainSocketService{
 
   constructor() {
     
-    /* Run after page opening */
+    /**
+    * Add Post to Posts BehaviorSubject
+    */
     this.socket.on('post', (rawPost: string) => {
       const posts = this.posts$.getValue();
       posts.unshift(JSON.parse(rawPost));
       this.posts$.next(posts);
     });
 
+    /**
+    * Add Post to Timeline BehaviorSubject
+    */
     this.socket.on('timelinePost', (rawPost: string) => {
       const posts = this.timelinePosts$.getValue();
       posts.unshift(JSON.parse(rawPost));
       this.timelinePosts$.next(posts);
     });
 
+    /**
+    * Add Post to PerosnalPosts BehaviorSubject
+    */
     this.socket.on('personalPost', (rawPost: string) => {
       const posts = this.personalPosts$.getValue();
       posts.unshift(JSON.parse(rawPost));
       this.personalPosts$.next(posts);
     });
 
+    /**
+    * Add Post to Follower BehaviorSubject
+    */
     this.socket.on('follower', (rawFollower: string) => {
       let followers = this.followers$.getValue();
       followers.unshift(JSON.parse(rawFollower));
       this.followers$.next(followers);
     });
 
+    /**
+    * Add Post to Following BehaviorSubject
+    */
     this.socket.on('following', (rawFollowing: string) => {
       let followings = this.followings$.getValue();
       followings.unshift(JSON.parse(rawFollowing));
       this.followings$.next(followings);
     });
 
+    /**
+    * Add userdata to User BehaviorSubject
+    */
     this.socket.on('userData', (rawUser: string) =>{
       this.user$.next(JSON.parse(rawUser));
     })
-
-    
-
   }
   
   /**
@@ -72,9 +86,12 @@ export class MainSocketService{
     this.socket.emit('timelinePosts', this.userKey);
   }
 
-
-  /* functions between socket and server socket */
-  
+  /**
+   *  socket function Add a Post
+   *
+   * @param {object} post
+   * @memberof MainSocketService
+   */
   public addPost(post: object) {
     post['userKey'] = this.userKey;
     this.socket.emit('post', JSON.stringify(post));
@@ -83,22 +100,40 @@ export class MainSocketService{
   /**
    * socket function like post
    * @param postId 
-   * 
+   * @memberof MainSocketService
    */
   public like(postId:String){
     this.socket.emit('like',{postId:postId, userKey:this.userKey});
   }
 
+  /**
+   *socket function dislike a Post
+   *
+   * @param {String} postId
+   * @memberof MainSocketService
+   */
   public dislike(postId:String){
     this.socket.emit('dislike',{postId:postId, userKey:this.userKey});
   }
 
+  /**
+   *socket function to get User data
+   *
+   * @param {string} userKey
+   * @memberof MainSocketService
+   */
   public getUser(userKey:string){
     this.socket.emit('getUser',userKey);
     this.socket.emit('getFollower', userKey);
     this.socket.emit('getFollowing', userKey);
   }
 
+  /**
+   *socket function to Follow a User
+   *
+   * @param {string} followUser
+   * @memberof MainSocketService
+   */
   public follow(followUser:string){
     if (followUser != this.userKey) {
       this.socket.emit('follow', {followUser:followUser, followingUser:this.userKey});

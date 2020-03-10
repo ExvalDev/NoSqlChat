@@ -18,6 +18,13 @@ export class PostFormComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   *Submit a Post
+   *
+   * @param {string} title
+   * @param {string} content
+   * @memberof PostFormComponent
+   */
   submitPost(title:string, content:string) {
     console.log('submitPost');
     this.mainSocket.addPost({title,content});
