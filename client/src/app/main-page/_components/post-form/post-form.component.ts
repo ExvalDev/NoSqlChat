@@ -28,6 +28,7 @@ export class PostFormComponent implements OnInit {
   submitPost(title:string, content:string) {
     console.log('submitPost');
     this.mainSocket.addPost({title,content});
+    document.getElementById('postModalClose').click();
   }
 
 }
