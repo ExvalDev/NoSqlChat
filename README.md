@@ -13,13 +13,17 @@ Folgende Anforderungen werden benötigt, um das Projekt nutzen zu können:
 Server:
 
 Zur Installation des Servers navigieren Sie zum Verzeichnis /server und starten den Befehl "npm install".
+
 Um den Server zu starten: "npm start".
+
 Der Server ist nun erreichbar unter: http://localhost:3000/
 
 Client
 
 Zur Installation des Clients navigieren Sie zum Verzeichnis /client und starten den Befehl "npm install".
+
 Zum starten des Clients: "npm start" (ohne Angular CLI) oder "ng serve" (mit Angular CLI).
+
 Die Client Web-App ist nun erreichbar unter: http://localhost:4200.
 
 # Grundfunktionen:
