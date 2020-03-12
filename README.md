@@ -10,6 +10,7 @@ Folgende Anforderungen werden benötigt, um das Projekt nutzen zu können:
 - Angular CLI (optional, but recommended) npm i -g @angular/cli
 
 # Setup / Projektstart
+
 Server:
 
 Zur Installation des Servers navigieren Sie zum Verzeichnis /server und starten den Befehl "npm install".
@@ -17,6 +18,7 @@ Zur Installation des Servers navigieren Sie zum Verzeichnis /server und starten 
 Um den Server zu starten: "npm start".
 
 Der Server ist nun erreichbar unter: http://localhost:3000/
+
 
 Client
 
