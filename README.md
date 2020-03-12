@@ -22,7 +22,7 @@ Client
 
 Zur Installation des Clients navigieren Sie zum Verzeichnis /client und starten den Befehl "npm install".
 
-Zum starten des Clients: "npm start" (ohne Angular CLI) oder "ng serve" (mit Angular CLI).
+Um den Client zu starten: "npm start" (ohne Angular CLI) oder "ng serve" (mit Angular CLI).
 
 Die Client Web-App ist nun erreichbar unter: http://localhost:4200.
 
