@@ -245,6 +245,7 @@ io.on('connection', socket => {
             const postKey = 'post:'+res;
             redisClient.hmset(postKey,post);
             sendPost('post',post, postKey);
+            sendPost('personalPost',post, postKey);
         });
         
     });
