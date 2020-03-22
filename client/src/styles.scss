@@ -9,3 +9,8 @@
 .feedBtnActive{
   border-bottom:4px solid $success;
 }
+
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
